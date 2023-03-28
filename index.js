@@ -13,7 +13,7 @@ var mrnVersionMap = {
 
 var reactNativeVersionString =
   require("@mrn/react-native/package.json").version;
-var MReactNativeMinorVersion = semver(reactNativeVersionString).major;
+var MReactNativeMinorVersion = semver.parse(reactNativeVersionString).major;
 var reactNativeMinorVersion =
   mrnVersionMap[MReactNativeMinorVersion] || mrnVersionMap["3"];
 
@@ -29,7 +29,7 @@ if (reactNativeMinorVersion >= 59) {
   upstreamTransformer = require("metro-bundler/build/transformer");
 } else {
   // handle RN <= 0.45
-  var oldUpstreamTransformer = require("react-native/packager/transformer");
+  var oldUpstreamTransformer = require("@mrn/react-native/packager/transformer");
   upstreamTransformer = {
     transform({ src, filename, options }) {
       return oldUpstreamTransformer.transform(src, filename, options);
