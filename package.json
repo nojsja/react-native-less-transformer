@@ -1,15 +1,15 @@
 {
-  "name": "react-native-less-transformer",
+  "name": "@nojsja/react-native-less-transformer",
   "version": "1.4.0",
   "description": "Less transformer for react-native",
   "main": "index.js",
-  "repository": "https://github.com/kristerkari/react-native-less-transformer",
+  "repository": "https://github.com/nojsja/react-native-less-transformer",
   "scripts": {
     "release": "npmpub",
     "precommit": "lint-staged",
     "test": "eslint ."
   },
-  "author": "Krister Kari",
+  "author": "Krister Kari, Nojsja",
   "license": "MIT",
   "files": [
     "index.js",
@@ -23,7 +23,7 @@
   },
   "peerDependencies": {
     "less": ">=2.0.0",
-    "react-native": ">=0.45.0"
+    "@mrn/react-native": ">=1.0.0"
   },
   "devDependencies": {
     "eslint": "^8.33.0",

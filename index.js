@@ -5,9 +5,17 @@ var appRoot = require("app-root-path");
 var css2rn = require("css-to-react-native-transform").default;
 
 var upstreamTransformer = null;
+var mrnVersionMap = {
+  1: 54,
+  2: 60,
+  3: 63
+};
 
-var reactNativeVersionString = require("react-native/package.json").version;
-var reactNativeMinorVersion = semver(reactNativeVersionString).minor;
+var reactNativeVersionString =
+  require("@mrn/react-native/package.json").version;
+var MReactNativeMinorVersion = semver(reactNativeVersionString).major;
+var reactNativeMinorVersion =
+  mrnVersionMap[MReactNativeMinorVersion] || mrnVersionMap["3"];
 
 if (reactNativeMinorVersion >= 59) {
   upstreamTransformer = require("metro-react-native-babel-transformer");
@@ -34,7 +42,7 @@ function renderToCSS({ src, filename, options = {} }) {
   var lessPromise = new Promise((resolve, reject) => {
     less
       .render(src, { paths: [path.dirname(filename), appRoot], ...lessOptions })
-      .then(result => {
+      .then((result) => {
         resolve(result.css);
       })
       .catch(reject);
@@ -46,14 +54,14 @@ function renderCSSToReactNative(css) {
   return css2rn(css, { parseMediaQueries: true });
 }
 
-module.exports.transform = function(src, filename, options) {
+module.exports.transform = function (src, filename, options) {
   if (typeof src === "object") {
     // handle RN >= 0.46
     ({ src, filename, options } = src);
   }
 
   if (filename.endsWith(".less")) {
-    return renderToCSS({ src, filename, options }).then(css => {
+    return renderToCSS({ src, filename, options }).then((css) => {
       var cssObject = renderCSSToReactNative(css);
       return upstreamTransformer.transform({
         src: "module.exports = " + JSON.stringify(cssObject),
